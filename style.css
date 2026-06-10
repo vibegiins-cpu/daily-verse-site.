@@ -1,0 +1,125 @@
+/* فونت و پایه */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Vazirmatn', sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #fdfdfd);
+    overflow-x: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* پس‌زمینه درخشان */
+.background-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    filter: blur(120px);
+    opacity: 0.5;
+}
+
+.glow1 {
+    background: #ffd700;
+    top: -100px;
+    left: -100px;
+}
+
+.glow2 {
+    background: #ff69b4;
+    bottom: -100px;
+    right: -100px;
+}
+
+/* ایموجی‌های شناور */
+.floating {
+    position: absolute;
+    font-size: 2rem;
+    animation: float 6s ease-in-out infinite alternate;
+}
+
+.floating1 { top: 20%; left: 10%; animation-duration: 5s; }
+.floating2 { top: 40%; left: 80%; animation-duration: 7s; }
+.floating3 { top: 70%; left: 30%; animation-duration: 6s; }
+.floating4 { top: 10%; left: 50%; animation-duration: 8s; }
+.floating5 { top: 60%; left: 70%; animation-duration: 9s; }
+.floating6 { top: 80%; left: 20%; animation-duration: 5.5s; }
+.floating7 { top: 30%; left: 60%; animation-duration: 7.5s; }
+.floating8 { top: 50%; left: 40%; animation-duration: 6.5s; }
+
+@keyframes float {
+    0% { transform: translateY(0px); }
+    100% { transform: translateY(-20px); }
+}
+
+/* کارت شیشه‌ای */
+.glass-card {
+    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 25px;
+    padding: 40px 30px;
+    width: 90%;
+    max-width: 450px;
+    text-align: center;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 10;
+}
+
+/* لوگو کوچک */
+.logo {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+/* عنوان */
+h1 {
+    margin: 10px 0;
+    color: #ffd700;
+    font-weight: 800;
+    text-shadow: 0 0 10px #ffd700;
+}
+
+/* زیرعنوان */
+.subtitle {
+    color: #333;
+    font-weight: 400;
+    margin-bottom: 25px;
+}
+
+/* دکمه طلایی */
+button {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    background: linear-gradient(135deg, #ffd700, #ffec8b);
+    color: #fff;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 25px rgba(255, 215, 0, 0.7);
+}
+
+/* جعبه آیه */
+#verseBox {
+    margin-top: 25px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 15px;
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    color: #333;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
