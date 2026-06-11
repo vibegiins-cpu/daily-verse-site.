@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daily Divine Verse | تجربه الهی روزانه</title>
+    <style>
+        :root {
+            --gold: #d4af37;
+            --light-gold: #f9f295;
+            --dark-gold: #b8860b;
+            --pearl: #fdfcf0;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.15);
+            --shadow: 0 8px 32px 0 rgba(184, 134, 11, 0.37);
+            --transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #fffdf0 0%, #f7f3d5 100%);
+            color: #333;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        body.rtl {
+            direction: rtl;
+        }
+
+        /* --- Heavenly Background --- */
+        #heaven-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #fdfcf0, #fff9e6);
+        }
+
+        .ray {
+            position: absolute;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(249, 242, 149, 0.2), transparent 40deg);
+            animation: rotateRay 60s linear infinite;
+            transform-origin: center center;
+        }
+
+        @keyframes rotateRay {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .symbol {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.6;
+            pointer-events: none;
+            animation: floatUp 15s linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(110vh) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+        }
+
+        /* --- Language Screen --- */
+        #lang-screen {
+            position: fixed;
+            inset: 0;
+            background: var(--pearl);
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 1s ease;
+        }
+
+        .lang-card {
+            background: white;
+            padding: 3rem;
+            border-radius: 24px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            border: 1px solid var(--gold);
+        }
+
+        .lang-btn {
+            display: block;
+            width: 200px;
+            padding: 1rem;
+            margin: 1rem auto;
+            border: 2px solid var(--gold);
+            background: transparent;
+            color: var(--dark-gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .lang-btn:hover {
+            background: var(--gold);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* --- Countdown --- */
+        #countdown-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(253, 252, 240, 0.95);
+            z-index: 900;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        #timer-num {
+            font-size: 8rem;
+            font-weight: bold;
+            color: var(--gold);
+            text-shadow: 0 0 30px var(--light-gold);
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+
+        .intention-text {
+            font-size: 1.5rem;
+            color: var(--dark-gold);
+            margin-top: 2rem;
+            font-style: italic;
+        }
+
+        /* --- Main Content --- */
+        #main-container {
+            width: 90%;
+            max-width: 800px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: var(--transition);
+        }
+
+        .verse-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            border: 2px solid var(--gold);
+            border-radius: 30px;
+            padding: 3rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .verse-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(249, 242, 149, 0.3) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .source-tag {
+            background: var(--dark-gold);
+            color: white;
+            padding: 0.4rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+
+        .original-text {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            font-weight: 600;
+        }
+
+        .translation-text {
+            font-size: 1.3rem;
+            color: #444;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .reference {
+            font-size: 1rem;
+            color: var(--dark-gold);
+            font-weight: bold;
+        }
+
+        /* --- Buttons --- */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 1.8rem;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--dark-gold), var(--gold));
+            color: white;
+            box-shadow: 0 4px 15px rgba(184, 134, 11, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--dark-gold);
+            border: 1px solid var(--gold);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(184, 134, 11, 0.5);
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        /* --- Particles --- */
+        .particle {
+            position: absolute;
+            background: var(--light-gold);
+            border-radius: 50%;
+            pointer-events: none;
+            filter: blur(1px);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 600px) {
+            .verse-card { padding: 1.5rem; }
+            .original-text { font-size: 1.4rem; }
+            .translation-text { font-size: 1.1rem; }
+            .btn { width: 100%; justify-content: center; }
+            #timer-num { font-size: 5rem; }
+        }
+
+        .fade-out { opacity: 0 !important; transform: scale(0.9) translateY(20px) !important; }
+        .fade-in { opacity: 1 !important; transform: scale(1) translateY(0) !important; }
+
+    </style>
+</head>
+<body>
+
+    <div id="heaven-bg">
+        <div class="ray"></div>
+    </div>
+
+    <!-- Language Selection -->
+    <div id="lang-screen">
+        <div class="lang-card">
+            <h1 style="color: var(--dark-gold); margin-bottom: 2rem;">Select Language / انتخاب زبان</h1>
+            <button class="lang-btn" onclick="selectLanguage('en')">English</button>
+            <button class="lang-btn" onclick="selectLanguage('fa')">فارسی</button>
+        </div>
+    </div>
+
+    <!-- Countdown Overlay -->
+    <div id="countdown-overlay">
+        <div id="timer-num">5</div>
+        <div class="intention-text" id="intention-text">Make a wish...</div>
+    </div>
+
+    <!-- Main Container -->
+    <main id="main-container">
+        <div class="verse-card" id="verse-card">
+            <div id="source-tag" class="source-tag">Quran</div>
+            <div id="original-text" class="original-text"></div>
+            <div id="translation-text" class="translation-text"></div>
+            <div id="reference" class="reference"></div>
+
+            <div class="button-group">
+                <button class="btn btn-primary" onclick="generateNewVerse()">
+                    <span id="btn-new-text">✨ Receive Divine Verse</span>
+                </button>
+                <button class="btn btn-secondary" onclick="copyVerse()">
+                    <span id="btn-copy-text">📋 Copy</span>
+                </button>
+                <button class="btn btn-secondary" onclick="shareVerse('whatsapp')">
+                    WhatsApp
+                </button>
+                <button class="btn btn-secondary" onclick="shareVerse('native')">
+                    📤 <span id="btn-share-text">Share</span>
+                </button>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="showLangScreen()" style="background:none; border:none; color:var(--dark-gold); cursor:pointer; text-decoration: underline;">Change Language / تغییر زبان</button>
+        </div>
+    </main>
+
+    <script>
+        /* --- Verse Database --- */
+        const verses = [
+            // QURAN (8)
+            { src: "Quran", ref: "2:255", orig: "اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ الْحَيُّ الْقَيُّومُ", en: "Allah! There is no deity save Him, the Alive, the Eternal.", fa: "خدايى که جز او معبودى نيست؛ زنده و برپادارنده است." },
+            { src: "Quran", ref: "94:5", orig: "فَإِنَّ مَعَ الْعُسْرِ يُسْرًا", en: "For truly with hardship comes ease.", fa: "پس به راستی با هر دشواری، آسانی است." },
+            { src: "Quran", ref: "1:1", orig: "بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ", en: "In the name of Allah, the Entirely Merciful, the Especially Merciful.", fa: "به نام خداوند بخشنده مهربان." },
+            { src: "Quran", ref: "2:186", orig: "وَإِذَا سَأَلَكَ عِبَادِي عَنِّي فَإِنِّي قَرِيبٌ", en: "And when My servants ask you concerning Me - indeed I am near.", fa: "و هنگامی که بندگان من، از تو درباره من بپرسند، بگو: من نزدیکم." },
+            { src: "Quran", ref: "13:28", orig: "أَلَا بِذِكْرِ اللَّهِ تَطْمَئِنُّ الْقُلُوبُ", en: "Unquestionably, by the remembrance of Allah hearts are assured.", fa: "آگاه باش که با یاد خدا دلها آرام می‌گیرد." },
+            { src: "Quran", ref: "55:60", orig: "هَلْ جَزَاءُ الْإِحْسَانِ إِلَّا الْإِحْسَانُ", en: "Is the reward for good anything but good?", fa: "آیا پاداش نیکی جز نیکی است؟" },
+            { src: "Quran", ref: "31:17", orig: "وَاصْبِرْ عَلَىٰ مَا أَصَابَكَ", en: "And be patient over what befalls you.", fa: "و در برابر مصایبی که به تو می‌رسد شکیبا باش." },
+            { src: "Quran", ref: "4:110", orig: "وَمَن يَعْمَلْ سُوءًا أَوْ يَظْلِمْ نَفْسَهُ ثُمَّ يَسْتَغْفِرِ اللَّهَ يَجِدِ اللَّهَ غَفُورًا رَّحِيمًا", en: "Whoever does a wrong or wrongs himself but then asks forgiveness of Allah will find Allah Forgiving and Merciful.", fa: "هر کس کار بدی انجام دهد یا به خود ستم کند، سپس از خدا آمرزش بطلبد، خدا را آمرزنده و مهربان خواهد یافت." },
+
+            // BIBLE (6)
+            { src: "Bible", ref: "Psalm 23:1", orig: "The LORD is my shepherd; I shall not want.", en: "The LORD is my shepherd; I shall not want.", fa: "خداوند شبان من است؛ محتاج به هیچ چیز نخواهم بود." },
+            { src: "Bible", ref: "John 3:16", orig: "For God so loved the world that He gave His only begotten Son.", en: "For God so loved the world that He gave His only begotten Son.", fa: "زیرا خدا جهان را این‌قدر محبت نمود که پسر یگانه خود را داد." },
+            { src: "Bible", ref: "Philippians 4:13", orig: "I can do all things through Christ who strengthens me.", en: "I can do all things through Christ who strengthens me.", fa: "می‌توانم هر چیز را انجام دهم در او که مرا نیرو می‌بخشد." },
+            { src: "Bible", ref: "1 Corinthians 13:4", orig: "Love is patient, love is kind. It does not envy, it does not boast.", en: "Love is patient, love is kind.", fa: "محبت بردبار است، محبت مهربان است. حسد نمی‌برد." },
+            { src: "Bible", ref: "Matthew 5:9", orig: "Blessed are the peacemakers, for they shall be called sons of God.", en: "Blessed are the peacemakers.", fa: "خوشابه‌حال صلح‌کنندگان، زیرا آنان فرزندان خدا خوانده خواهند شد." },
+            { src: "Bible", ref: "Proverbs 3:5", orig: "Trust in the LORD with all your heart and lean not on your own understanding.", en: "Trust in the LORD with all your heart.", fa: "با تمام دل خود بر خداوند توکل کن و بر درک خود تکیه منما." },
+
+            // TORAH (6)
+            { src: "Torah", ref: "Genesis 1:1", orig: "בְּרֵאשִׁית בָּרָא אֱלֹהִים אֵת הַשָּׁמַיִם וְאֵת הָאָרֶץ", en: "In the beginning God created the heaven and the earth.", fa: "در ابتدا، خدا آسمانها و زمین را آفرید." },
+            { src: "Torah", ref: "Numbers 6:24", orig: "יְבָרֶכְךָ יְהוָה וְיִשְׁמְרֶךָ", en: "The LORD bless thee, and keep thee.", fa: "خداوند تو را برکت دهد و تو را محافظت کند." },
+            { src: "Torah", ref: "Exodus 3:14", orig: "אֶהְיֶה אֲשֶׁר אֶהְיֶה", en: "I AM THAT I AM.", fa: "هستم آنکه هستم." },
+            { src: "Torah", ref: "Leviticus 19:18", orig: "וְאָהַבְתָּ לְרֵעֲךָ כָּמוֹךָ", en: "Thou shalt love thy neighbour as thyself.", fa: "همسایه ات را مثل خودت دوست بدار." },
+            { src: "Torah", ref: "Deuteronomy 6:4", orig: "שְׁמַע יִשְׂרָאֵל יְהוָה אֱלֹהֵינוּ יְהוָה אֶחָד", en: "Hear, O Israel: The LORD our God is one LORD.", fa: "بشنو ای اسرائیل، یهوه خدای ما، یهوه واحد است." },
+            { src: "Torah", ref: "Exodus 20:12", orig: "כַּבֵּד אֶת אָבִיךָ וְאֶת אִמֶּךָ", en: "Honour thy father and thy mother.", fa: "پدر و مادر خود را احترام نما." }
+        ];
+
+        /* --- UI Translations --- */
+        const ui = {
+            en: {
+                wish: "Make a wish, prayer, or reflection...",
+                btnNew: "✨ Receive Divine Verse",
+                btnCopy: "📋 Copy Verse",
+                btnShare: "Share Verse",
+                copied: "Copied to clipboard!",
+                source: "Source",
+                quran: "Holy Quran",
+                bible: "Holy Bible",
+                torah: "Holy Torah"
+            },
+            fa: {
+                wish: "نیتی کنید، دعایی بخوانید یا تأمل کنید...",
+                btnNew: "✨ دریافت آیه الهی",
+                btnCopy: "📋 کپی آیه",
+                btnShare: "اشتراک‌گذاری",
+                copied: "در حافظه کپی شد!",
+                source: "منبع",
+                quran: "قرآن کریم",
+                bible: "کتاب مقدس",
+                torah: "تورات شریف"
+            }
+        };
+
+        let currentLang = localStorage.getItem('divine_lang') || null;
+        let currentVerse = null;
+
+        /* --- Core Logic --- */
+
+        function init() {
+            createFloatingSymbols();
+            createParticles();
+            if (currentLang) {
+                applyLanguage(currentLang);
+                document.getElementById('lang-screen').style.display = 'none';
+                generateNewVerse(true);
+            }
+        }
+
+        function selectLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('divine_lang', lang);
+            applyLanguage(lang);
+            document.getElementById('lang-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('lang-screen').style.display = 'none';
+                generateNewVerse();
+            }, 1000);
+        }
+
+        function showLangScreen() {
+            const screen = document.getElementById('lang-screen');
+            screen.style.display = 'flex';
+            setTimeout(() => screen.style.opacity = '1', 10);
+        }
+
+        function applyLanguage(lang) {
+            const isRtl = lang === 'fa';
+            document.body.className = isRtl ? 'rtl' : '';
+            document.getElementById('intention-text').innerText = ui[lang].wish;
+            document.getElementById('btn-new-text').innerText = ui[lang].btnNew;
+            document.getElementById('btn-copy-text').innerText = ui[lang].btnCopy;
+            document.getElementById('btn-share-text').innerText = ui[lang].btnShare;
+        }
+
+        function generateNewVerse(immediate = false) {
+            const main = document.getElementById('main-container');
+            main.classList.add('fade-out');
+
+            if (immediate) {
+                showVerse();
+                return;
+            }
+
+            setTimeout(() => {
+                startCountdown(() => {
+                    showVerse();
+                });
+            }, 600);
+        }
+
+        function startCountdown(callback) {
+            const overlay = document.getElementById('countdown-overlay');
+            const timerNum = document.getElementById('timer-num');
+            overlay.style.display = 'flex';
+            
+            let count = 5;
+            timerNum.innerText = count;
+
+            const interval = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    timerNum.innerText = count;
+                } else {
+                    clearInterval(interval);
+                    overlay.style.display = 'none';
+                    callback();
+                }
+            }, 1000);
+        }
+
+        function showVerse() {
+            const main = document.getElementById('main-container');
+            const newVerse = verses[Math.floor(Math.random() * verses.length)];
+            currentVerse = newVerse;
+
+            // Map source name
+            let sourceName = newVerse.src.toLowerCase();
+            document.getElementById('source-tag').innerText = ui[currentLang][sourceName];
+            
+            document.getElementById('original-text').innerText = newVerse.orig;
+            document.getElementById('translation-text').innerText = (currentLang === 'fa') ? newVerse.fa : newVerse.en;
+            document.getElementById('reference').innerText = newVerse.ref;
+
+            main.classList.remove('fade-out');
+            main.classList.add('fade-in');
+        }
+
+        /* --- Features --- */
+
+        function copyVerse() {
+            const text = `${currentVerse.orig}\n${(currentLang === 'fa') ? currentVerse.fa : currentVerse.en}\n(${currentVerse.src} - ${currentVerse.ref})`;
+            navigator.clipboard.writeText(text).then(() => {
+                alert(ui[currentLang].copied);
+            });
+        }
+
+        function shareVerse(type) {
+            const text = `${currentVerse.orig}\n${(currentLang === 'fa') ? currentVerse.fa : currentVerse.en}\n(${currentVerse.src} - ${currentVerse.ref})`;
+            
+            if (type === 'whatsapp') {
+                window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+            } else if (type === 'native' && navigator.share) {
+                navigator.share({ title: 'Daily Divine Verse', text: text });
+            } else {
+                copyVerse();
+            }
+        }
+
+        /* --- Visuals --- */
+
+        function createFloatingSymbols() {
+            const symbols = ['✨', '💛', '🤍', '💌', '☁️', '🪽', '🕊️'];
+            const container = document.getElementById('heaven-bg');
+            
+            setInterval(() => {
+                const el = document.createElement('div');
+                el.className = 'symbol';
+                el.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                el.style.left = Math.random() * 100 + 'vw';
+                el.style.animationDuration = (Math.random() * 10 + 10) + 's';
+                container.appendChild(el);
+                
+                setTimeout(() => el.remove(), 15000);
+            }, 2000);
+        }
+
+        function createParticles() {
+            const container = document.body;
+            for(let i=0; i<30; i++) {
+                const p = document.createElement('div');
+                p.className = 'particle';
+                const size = Math.random() * 5 + 2;
+                p.style.width = size + 'px';
+                p.style.height = size + 'px';
+                p.style.left = Math.random() * 100 + 'vw';
+                p.style.top = Math.random() * 100 + 'vh';
+                p.style.opacity = Math.random() * 0.5;
+                container.appendChild(p);
+                
+                animateParticle(p);
+            }
+        }
+
+        function animateParticle(p) {
+            const duration = Math.random() * 3000 + 3000;
+            p.animate([
+                { transform: 'translate(0, 0)', opacity: 0.2 },
+                { transform: `translate(${Math.random()*40-20}px, ${Math.random()*40-20}px)`, opacity: 0.5 },
+                { transform: 'translate(0, 0)', opacity: 0.2 }
+            ], {
+                duration: duration,
+                iterations: Infinity
+            });
+        }
+
+        init();
+    </script>
+</body>
+</html>
